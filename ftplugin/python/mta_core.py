@@ -27,6 +27,7 @@ class Tag( object ):
       self.valid = False
       return
     self.valid = True
+    self.name = match_object.group( 'tag_name' )
 
     if match_object.group( 'start_slash' ):
       self.kind = TagType.CLOSING
@@ -109,44 +110,80 @@ def LineColumnForOffsetInString( text, offset ):
   return None, None
 
 
-def GetOpeningTag( html, cursor_offset ):
-  tags_to_close = 0
+def TagWithSameNameExistsInSequence( tag, sequence ):
+  for current_tag in sequence:
+    if current_tag.name == tag.name:
+      return True
+  return False
+
+
+def GetPreviousUnmatchedOpeningTag( html, cursor_offset ):
   search_index = cursor_offset
+  tags_to_close = []
   while True:
     prev_tag = ReverseFindTag( html, search_index )
     if not prev_tag:
-      return None
+      break
+    search_index = prev_tag.start_offset
+
     if prev_tag.kind == TagType.CLOSING:
-      tags_to_close += 1
+      tags_to_close.append( prev_tag )
     elif prev_tag.kind == TagType.OPENING:
-      if tags_to_close > 0:
-        tags_to_close -= 1
+      if tags_to_close:
+        if tags_to_close[ -1 ].name == prev_tag.name:
+          tags_to_close.pop()
+        else:
+          continue
       else:
         return prev_tag
     # self-closed tags ignored
-
-    search_index = prev_tag.start_offset
   return None
 
 
-def GetClosingTag( html, cursor_offset ):
-  tags_to_close = 0
+def GetNextUnmatchedClosingTag( html, cursor_offset ):
+  def RemoveClosedOpenTags( tags_to_close, new_tag ):
+    i = 1
+    for tag in reversed( tags_to_close ):
+      if tag.name == new_tag.name:
+        break
+      else:
+        i += 1
+    assert i <= len( tags_to_close )
+    del tags_to_close[ -i: ]
+    return tags_to_close
+
   search_index = cursor_offset
+  tags_to_close = []
   while True:
     next_tag = ForwardFindTag( html, search_index )
     if not next_tag:
-      return None
-    if next_tag.kind == TagType.OPENING:
-      tags_to_close += 1
-    elif next_tag.kind == TagType.CLOSING:
-      if tags_to_close > 0:
-        tags_to_close -= 1
-      else:
-        return next_tag
-    # self-closed tags ignored
-
+      break
     search_index = next_tag.end_offset
+
+    if next_tag.kind == TagType.OPENING:
+      tags_to_close.append( next_tag )
+    elif next_tag.kind == TagType.CLOSING:
+      if not tags_to_close or not TagWithSameNameExistsInSequence(
+        next_tag, tags_to_close ):
+        return next_tag
+      tags_to_close = RemoveClosedOpenTags( tags_to_close, next_tag )
+    # self-closed tags ignored
   return None
+
+
+def GetOpeningAndClosingTags( html, cursor_offset ):
+  current_offset = cursor_offset
+
+  closing_tag = GetNextUnmatchedClosingTag( html, current_offset )
+  while True:
+    opening_tag = GetPreviousUnmatchedOpeningTag( html, current_offset )
+
+    if not opening_tag or not closing_tag:
+      return None, None
+
+    if opening_tag.name == closing_tag.name:
+      return opening_tag, closing_tag
+    current_offset = opening_tag.start_offset
 
 
 def AdaptCursorOffsetIfNeeded( sanitized_html, cursor_offset ):
@@ -193,8 +230,8 @@ def LocationsOfEnclosingTags( input_html, cursor_line, cursor_column ):
 
   adapted_cursor_offset = AdaptCursorOffsetIfNeeded( sanitized_html,
                                                      cursor_offset )
-  opening_tag = GetOpeningTag( sanitized_html, adapted_cursor_offset )
-  closing_tag = GetClosingTag( sanitized_html, adapted_cursor_offset )
+  opening_tag, closing_tag = GetOpeningAndClosingTags( sanitized_html,
+                                                       adapted_cursor_offset)
 
   if not opening_tag or not closing_tag:
     return bad_result

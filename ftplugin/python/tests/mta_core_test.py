@@ -2,7 +2,6 @@
 
 from nose.tools import eq_
 from .. import mta_core
-import re
 
 
 def LineColumnOffsetConversions_Basic_test():
@@ -106,76 +105,89 @@ def PacifyHtmlComments_Works_test():
          'foo <!-- <div> \tfoo \n </div> <br/> -->' ) )
 
 
-def GetOpeningTag_Simple_test():
+def GetPreviousUnmatchedOpeningTag_Simple_test():
   html = "<div> foo"
-  eq_( 0, mta_core.GetOpeningTag( html, 6 ).start_offset )
+  eq_( 0, mta_core.GetPreviousUnmatchedOpeningTag( html, 6 ).start_offset )
 
 
-def GetOpeningTag_Nested_test():
+def GetPreviousUnmatchedOpeningTag_Nested_test():
   html = "<div><div></div> foo "
-  eq_( 0, mta_core.GetOpeningTag( html, 17 ).start_offset )
+  eq_( 0, mta_core.GetPreviousUnmatchedOpeningTag( html, 17 ).start_offset )
 
   html = "<div><div><p></p> foo "
-  eq_( 5, mta_core.GetOpeningTag( html, 18 ).start_offset )
+  eq_( 5, mta_core.GetPreviousUnmatchedOpeningTag( html, 18 ).start_offset )
 
 
-def GetOpeningTag_NestedMultiLine_test():
+def GetPreviousUnmatchedOpeningTag_NestedMultiLine_test():
   html = "<div>\n<div\n></div> foo "
-  eq_( 0, mta_core.GetOpeningTag( html, 20 ).start_offset )
+  eq_( 0, mta_core.GetPreviousUnmatchedOpeningTag( html, 20 ).start_offset )
 
   html = "<\ndiv>\n<div><br/><p>\n\n</p> foo "
-  eq_( 7, mta_core.GetOpeningTag( html, 27 ).start_offset )
+  eq_( 7, mta_core.GetPreviousUnmatchedOpeningTag( html, 27 ).start_offset )
 
 
-def GetOpeningTag_OnAngleBracket_test():
+def GetPreviousUnmatchedOpeningTag_OnAngleBracket_test():
   html = "<div>x"
-  eq_( 0, mta_core.GetOpeningTag( html, 5 ).start_offset )
-  eq_( None, mta_core.GetOpeningTag( html, 4 ) )
+  eq_( 0, mta_core.GetPreviousUnmatchedOpeningTag( html, 5 ).start_offset )
+  eq_( None, mta_core.GetPreviousUnmatchedOpeningTag( html, 4 ) )
 
 
-def GetClosingTag_NoOpeningTagFail_test():
+def GetPreviousUnmatchedOpeningTag_OrphanOpeningTag_test():
+  html = "<div><p><i><br></i></p>x"
+  eq_( 0, mta_core.GetPreviousUnmatchedOpeningTag( html, 23 ).start_offset )
+
+
+def GetNextUnmatchedClosingTag_NoOpeningTagFail_test():
   html = "</div> foo"
-  eq_( None, mta_core.GetOpeningTag( html, 7 ) )
+  eq_( None, mta_core.GetPreviousUnmatchedOpeningTag( html, 7 ) )
 
   html = "</div><br/></div> foo "
-  eq_( None, mta_core.GetOpeningTag( html, 18 ) )
+  eq_( None, mta_core.GetPreviousUnmatchedOpeningTag( html, 18 ) )
 
   html = "<\n/div>\n<div/><br/><p/>\n\n</p> foo "
-  eq_( None, mta_core.GetOpeningTag( html, 30 ) )
+  eq_( None, mta_core.GetPreviousUnmatchedOpeningTag( html, 30 ) )
 
 
-def GetClosingTag_Simple_test():
+def GetNextUnmatchedClosingTag_Simple_test():
   html = "foo </div>"
-  eq_( 4, mta_core.GetClosingTag( html, 0 ).start_offset )
+  eq_( 4, mta_core.GetNextUnmatchedClosingTag( html, 0 ).start_offset )
 
 
-def GetClosingTag_Nested_test():
+def GetNextUnmatchedClosingTag_Nested_test():
   html = "foo <div></div></div>"
-  eq_( 15, mta_core.GetClosingTag( html, 0 ).start_offset )
+  eq_( 15, mta_core.GetNextUnmatchedClosingTag( html, 0 ).start_offset )
 
   html = "foo <div><br/></div></div>"
-  eq_( 20, mta_core.GetClosingTag( html, 0 ).start_offset )
+  eq_( 20, mta_core.GetNextUnmatchedClosingTag( html, 0 ).start_offset )
 
   html = "foo <\ndiv><\n\nbr/></div></div>"
-  eq_( 23, mta_core.GetClosingTag( html, 0 ).start_offset )
+  eq_( 23, mta_core.GetNextUnmatchedClosingTag( html, 0 ).start_offset )
 
 
-def GetClosingTag_NoClosingTagFail_test():
+def GetNextUnmatchedClosingTag_NoClosingTagFail_test():
   html = "foo <div>"
-  eq_( None, mta_core.GetClosingTag( html, 0 ) )
+  eq_( None, mta_core.GetNextUnmatchedClosingTag( html, 0 ) )
 
   html = "foo <div><br/><div>"
-  eq_( None, mta_core.GetClosingTag( html, 0 ) )
+  eq_( None, mta_core.GetNextUnmatchedClosingTag( html, 0 ) )
 
   html = "foo <\ndiv>\n<div/><br/><p/>\n\n<p>"
-  eq_( None, mta_core.GetClosingTag( html, 0 ) )
+  eq_( None, mta_core.GetNextUnmatchedClosingTag( html, 0 ) )
 
 
-def GetClosingTag_OnAngleBracket_test():
+def GetNextUnmatchedClosingTag_OnAngleBracket_test():
   html = "x</div>"
-  eq_( 1, mta_core.GetClosingTag( html, 0 ).start_offset )
-  eq_( 1, mta_core.GetClosingTag( html, 1 ).start_offset )
-  eq_( None, mta_core.GetClosingTag( html, 2 ) )
+  eq_( 1, mta_core.GetNextUnmatchedClosingTag( html, 0 ).start_offset )
+  eq_( 1, mta_core.GetNextUnmatchedClosingTag( html, 1 ).start_offset )
+  eq_( None, mta_core.GetNextUnmatchedClosingTag( html, 2 ) )
+
+
+def GetNextUnmatchedClosingTag_OrphanOpeningTag_test():
+  html = "x<p><i><br></i></p></div>"
+  eq_( 19, mta_core.GetNextUnmatchedClosingTag( html, 0 ).start_offset )
+
+  html = "x<p><i><br></i></p><br></div>"
+  eq_( 23, mta_core.GetNextUnmatchedClosingTag( html, 0 ).start_offset )
 
 
 def LocationsOfEnclosingTags_Basic_test():
@@ -215,6 +227,30 @@ def LocationsOfEnclosingTags_CursorInTagFull_test():
     yield gen, i
 
 
+def LocationsOfEnclosingTags_UnbalancedOpeningTag_test():
+  # this is the reason why we need to continue looking for a different opening
+  # tag if the closing tag we found does not match
+  html = "<ul><li>foo</ul>"
+  eq_( ( 1, 1, 1, 12 ), mta_core.LocationsOfEnclosingTags( html, 1, 9 ) )
+
+  html = "<ul><li></ul></ul>"
+  eq_( ( 1, 1, 1, 9 ), mta_core.LocationsOfEnclosingTags( html, 1, 1 ) )
+
+  # this is the reason why we need to be able to skip over orphan open tags
+  html = "<ul><ul><li></ul>x<ul><li></ul>\n</ul>"
+  eq_( ( 1, 1, 2, 1 ), mta_core.LocationsOfEnclosingTags( html, 1, 2 ) )
+  eq_( ( 1, 1, 2, 1 ), mta_core.LocationsOfEnclosingTags( html, 1, 18 ) )
+
+
+def LocationsOfEnclosingTags_UnbalancedOpeningTagFull_test():
+  html = "<ul><li>foo</ul>"
+  def gen( column ):
+    eq_( ( 1, 1, 1, 12 ), mta_core.LocationsOfEnclosingTags( html, 1, column ) )
+
+  for i in xrange( 1, len( html ) + 1 ):
+    yield gen, i
+
+
 def LocationsOfEnclosingTags_Fail_test():
   html = ""
   eq_( ( 0, 0, 0, 0 ), mta_core.LocationsOfEnclosingTags( html, 1, 2 ) )
@@ -242,4 +278,7 @@ def LocationsOfEnclosingTags_Fail_test():
   eq_( ( 0, 0, 0, 0 ), mta_core.LocationsOfEnclosingTags( html, 1, 5 ) )
 
   html = "</div></div>"
+  eq_( ( 0, 0, 0, 0 ), mta_core.LocationsOfEnclosingTags( html, 1, 5 ) )
+
+  html = "<div></foo>"
   eq_( ( 0, 0, 0, 0 ), mta_core.LocationsOfEnclosingTags( html, 1, 5 ) )
