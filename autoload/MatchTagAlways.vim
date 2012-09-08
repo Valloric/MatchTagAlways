@@ -22,6 +22,13 @@ exe 'python sys.path = sys.path + ["' . s:script_folder_path . '/../python"]'
 py import mta_vim
 
 
+if g:mta_use_matchparen_group
+  let s:match_group = 'MatchParen'
+else
+  let s:match_group = 'MatchTag'
+endif
+
+
 function! MatchTagAlways#Setup()
   " When vim is in diff mode, don't run
   if &diff
@@ -37,6 +44,10 @@ function! MatchTagAlways#Setup()
     autocmd! CursorMoved,CursorMovedI,WinEnter <buffer>
           \ call s:HighlightEnclosingTagsIfPossible()
   augroup END
+
+  if !g:mta_use_matchparen_group
+    hi MatchTag ctermfg=black ctermbg=lightgreen guifg=black guibg=lightgreen
+  endif
 endfunction
 
 
@@ -75,7 +86,7 @@ function! s:HighlightEnclosingTags()
     return
   endif
 
-  exe '2match MatchParen /' .
+  exe '2match ' . s:match_group . ' /' .
         \ '\(\%' . opening_tag_line . 'l\%' . opening_tag_column . 'c<\/\?\_s*\zs.\{-}\ze[ >\/]\)\|' .
         \ '\(\%' . closing_tag_line . 'l\%' . closing_tag_column . 'c<\/\?\_s*\zs.\{-}\ze[ >\/]\)' .
         \ '/'

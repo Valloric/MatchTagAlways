@@ -35,6 +35,8 @@ let g:mta_filetypes =
       \ 'jinja' : 1,
       \} )
 
+let g:mta_use_matchparen_group = get( g:, 'mta_use_matchparen_group', 0 )
+
 augroup matchtagalways
   autocmd! FileType * call MatchTagAlways#Setup()
 augroup END
