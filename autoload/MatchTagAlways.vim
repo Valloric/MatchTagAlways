@@ -41,14 +41,13 @@ endfunction
 
 
 function! s:HighlightEnclosingTagsIfPossible()
-  " Remove any previous match.
-  if exists('w:tag_hl_on') && w:tag_hl_on
+  " Remove any previous highlighting.
+  if get( w:, 'tags_highlighted', 0 )
+      let w:tags_highlighted = 0
       2match none
-      let w:tag_hl_on = 0
   endif
 
-  " Avoid that we remove the popup menu.
-  " Return when there are no colors (looks like the cursor jumps).
+  " Don't remove the pop-up menu and don't run when there are no colors at all.
   if pumvisible() || ( &t_Co < 8 && !has( "gui_running" ) )
       return
   endif
@@ -80,5 +79,5 @@ function! s:HighlightEnclosingTags()
         \ '\(\%' . opening_tag_line . 'l\%' . opening_tag_column . 'c<\/\?\_s*\zs.\{-}\ze[ >\/]\)\|' .
         \ '\(\%' . closing_tag_line . 'l\%' . closing_tag_column . 'c<\/\?\_s*\zs.\{-}\ze[ >\/]\)' .
         \ '/'
-  let w:tag_hl_on = 1
+  let w:tags_highlighted = 1
 endfunction
