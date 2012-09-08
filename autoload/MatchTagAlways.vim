@@ -1,18 +1,44 @@
-if !has( 'python' )
-  echohl WarningMsg |
-        \ echomsg "MatchTagAlways unavailable: requires python 2.x" |
-        \ echohl None
-  finish
-endif
+" Copyright (C) 2012  Strahinja Val Markovic  <val@markovic.io>
+"
+" This file is part of MatchTagAlways.
+"
+" MatchTagAlways is free software: you can redistribute it and/or modify
+" it under the terms of the GNU General Public License as published by
+" the Free Software Foundation, either version 3 of the License, or
+" (at your option) any later version.
+"
+" MatchTagAlways is distributed in the hope that it will be useful,
+" but WITHOUT ANY WARRANTY; without even the implied warranty of
+" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+" GNU General Public License for more details.
+"
+" You should have received a copy of the GNU General Public License
+" along with MatchTagAlways.  If not, see <http://www.gnu.org/licenses/>.
+
 
 let s:script_folder_path = escape( expand( '<sfile>:p:h' ), '\' )
 py import vim
-exe 'python sys.path = sys.path + ["' . s:script_folder_path . '/python"]'
+exe 'python sys.path = sys.path + ["' . s:script_folder_path . '/../python"]'
 py import mta_vim
 
-augroup matchhtmlparen
-  autocmd! CursorMoved,CursorMovedI,WinEnter <buffer> call s:HighlightEnclosingTagsIfPossible()
-augroup END
+
+function! MatchTagAlways#Setup()
+  " When vim is in diff mode, don't run
+  if &diff
+    return
+  endif
+
+  " If this is not an allowed filetype, don't do anything
+  if !get( g:mta_filetypes, &filetype, 0 )
+    return
+  endif
+
+  augroup matchtagalways
+    autocmd! CursorMoved,CursorMovedI,WinEnter <buffer>
+          \ call s:HighlightEnclosingTagsIfPossible()
+  augroup END
+endfunction
+
 
 function! s:HighlightEnclosingTagsIfPossible()
   " Remove any previous match.
