@@ -80,16 +80,23 @@ def OffsetForLineColumnInString( text, line, column ):
   offset = -1
   current_line = 1
   current_column = 0
+  previous_char = ''
   for char in text:
     offset += 1
     current_column += 1
     if char == '\n':
       current_line += 1
       current_column = 0
-      continue
 
     if current_line == line and current_column == column:
       return offset
+    if current_line > line:
+      # Vim allows the user to stop on an empty line and declares that column 1
+      # exists even when there are no characters on that line
+      if current_column == 0 and previous_char == '\n':
+        return offset -1
+      break
+    previous_char = char
   return None
 
 
@@ -107,6 +114,8 @@ def LineColumnForOffsetInString( text, offset ):
 
     if current_offset == offset:
       return current_line, current_column
+    if current_offset > offset:
+      break
   return None, None
 
 

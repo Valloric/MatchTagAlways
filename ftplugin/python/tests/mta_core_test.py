@@ -27,10 +27,18 @@ def LineColumnOffsetConversions_ComplexMultiLine_test():
   eq_( (6, 1), mta_core.LineColumnForOffsetInString( text, 25 ) )
 
 
+def LineColumnOffsetConversions_EmtpyLine_test():
+  # Vim allows the user to stop on an empty line and declares that column 1
+  # exists even when there are no characters on that line
+  text = "foo\nbar\nqux the thoeu \n\n\n aa "
+  eq_( 23, mta_core.OffsetForLineColumnInString( text, 5, 1 ) )
+
+
 def LineColumnOffsetConversions_FailOnEmptyString_test():
   text = ""
   eq_( None, mta_core.OffsetForLineColumnInString( text, 1, 3 ) )
   eq_( (None, None), mta_core.LineColumnForOffsetInString( text, 2 ) )
+
 
 def LineColumnOffsetConversions_FailLineOutOfRange_test():
   text = "foo\nbar\nqux the thoeu \n\n\n aa "
@@ -40,7 +48,7 @@ def LineColumnOffsetConversions_FailLineOutOfRange_test():
 
 def LineColumnOffsetConversions_FailColumnOutOfRange_test():
   text = "foo\nbar\nqux the thoeu \n\n\n aa "
-  eq_( None, mta_core.OffsetForLineColumnInString( text, 2, 0 ) )
+  # eq_( None, mta_core.OffsetForLineColumnInString( text, 2, 0 ) )
   eq_( None, mta_core.OffsetForLineColumnInString( text, 2, 5 ) )
   eq_( None, mta_core.OffsetForLineColumnInString( text, 2, 4 ) )
 
