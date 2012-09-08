@@ -85,6 +85,8 @@ def ReverseFindTag( text, from_position ):
   except ValueError:
     return None
   match = TAG_REGEX.match( text, bracket_index )
+  if not match:
+    return None
   if match.end() <= from_position:
     return Tag( match )
   return None

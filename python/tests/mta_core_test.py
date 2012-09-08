@@ -163,6 +163,15 @@ def GetPreviousUnmatchedOpeningTag_OrphanOpeningTag_test():
 
 
 def GetNextUnmatchedClosingTag_NoOpeningTagFail_test():
+  html = "foobar"
+  eq_( None, mta_core.GetPreviousUnmatchedOpeningTag( html, 3 ) )
+
+  html = "<!DOCTYPE>"
+  eq_( None, mta_core.GetPreviousUnmatchedOpeningTag( html, 3 ) )
+
+  html = "</div>"
+  eq_( None, mta_core.GetPreviousUnmatchedOpeningTag( html, 3 ) )
+
   html = "</div> foo"
   eq_( None, mta_core.GetPreviousUnmatchedOpeningTag( html, 7 ) )
 
@@ -190,6 +199,15 @@ def GetNextUnmatchedClosingTag_Nested_test():
 
 
 def GetNextUnmatchedClosingTag_NoClosingTagFail_test():
+  html = "foobar"
+  eq_( None, mta_core.GetNextUnmatchedClosingTag( html, 0 ) )
+
+  html = "<!DOCTYPE>"
+  eq_( None, mta_core.GetNextUnmatchedClosingTag( html, 0 ) )
+
+  html = "<div>"
+  eq_( None, mta_core.GetNextUnmatchedClosingTag( html, 0 ) )
+
   html = "foo <div>"
   eq_( None, mta_core.GetNextUnmatchedClosingTag( html, 0 ) )
 
