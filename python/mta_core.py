@@ -249,32 +249,35 @@ def AdaptCursorOffsetIfNeeded( sanitized_html, cursor_offset ):
 
 
 def LocationsOfEnclosingTags( input_html, cursor_line, cursor_column ):
-  sanitized_html = PacifyHtmlComments( input_html )
-  cursor_offset = OffsetForLineColumnInString( sanitized_html,
-                                               cursor_line,
-                                               cursor_column )
   bad_result = ( 0, 0, 0, 0 )
-  if cursor_offset == None:
+  try:
+    sanitized_html = PacifyHtmlComments( input_html )
+    cursor_offset = OffsetForLineColumnInString( sanitized_html,
+                                                cursor_line,
+                                                cursor_column )
+    if cursor_offset == None:
+      return bad_result
+
+    adapted_cursor_offset = AdaptCursorOffsetIfNeeded( sanitized_html,
+                                                      cursor_offset )
+    opening_tag, closing_tag = GetOpeningAndClosingTags( sanitized_html,
+                                                        adapted_cursor_offset)
+
+    if not opening_tag or not closing_tag:
+      return bad_result
+
+    opening_tag_line, opening_tag_column = LineColumnForOffsetInString(
+      sanitized_html,
+      opening_tag.start_offset )
+
+    closing_tag_line, closing_tag_column = LineColumnForOffsetInString(
+      sanitized_html,
+      closing_tag.start_offset )
+
+    return ( opening_tag_line,
+            opening_tag_column,
+            closing_tag_line,
+            closing_tag_column )
+  except Exception:
     return bad_result
-
-  adapted_cursor_offset = AdaptCursorOffsetIfNeeded( sanitized_html,
-                                                     cursor_offset )
-  opening_tag, closing_tag = GetOpeningAndClosingTags( sanitized_html,
-                                                       adapted_cursor_offset)
-
-  if not opening_tag or not closing_tag:
-    return bad_result
-
-  opening_tag_line, opening_tag_column = LineColumnForOffsetInString(
-    sanitized_html,
-    opening_tag.start_offset )
-
-  closing_tag_line, closing_tag_column = LineColumnForOffsetInString(
-    sanitized_html,
-    closing_tag.start_offset )
-
-  return ( opening_tag_line,
-           opening_tag_column,
-           closing_tag_line,
-           closing_tag_column )
 
