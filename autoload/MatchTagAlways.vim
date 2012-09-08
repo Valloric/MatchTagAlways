@@ -46,7 +46,7 @@ function! MatchTagAlways#Setup()
   augroup END
 
   if !g:mta_use_matchparen_group
-    hi MatchTag ctermfg=black ctermbg=lightgreen guifg=black guibg=lightgreen
+    hi MatchTag ctermfg=black ctermbg=lightblue guifg=black guibg=lightblue
   endif
 endfunction
 
