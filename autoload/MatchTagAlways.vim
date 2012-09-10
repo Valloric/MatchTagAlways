@@ -45,7 +45,7 @@ function! MatchTagAlways#Setup()
           \ call s:HighlightEnclosingTagsIfPossible()
   augroup END
 
-  if !g:mta_use_matchparen_group
+  if !g:mta_use_matchparen_group && g:mta_set_default_matchtag_color
     hi MatchTag ctermfg=black ctermbg=lightblue guifg=black guibg=lightblue
   endif
 endfunction
