@@ -1,5 +1,4 @@
-Always highlight enclosing tags
-==================================
+# Always highlight enclosing tags
 
 The MatchTagAlways.vim (MTA) plug-in for the [Vim text editor][vim] always
 highlights the XML/HTML tags that enclose your cursor location. It's probably
@@ -11,8 +10,7 @@ It even doesn't bork on HTML templating languages like Jinja or HTML5 use-cases
 like unclosed tags. It's pretty smart and should do the right thing in most
 cases. If it doesn't, report the problem on the [issue tracker][tracker]!
 
-Installation
-------------
+## Installation
 
 Use [Vundle][vundle] to install the plugin. You _are_ using Vundle to manage
 your Vim plugins, right? [Pathogen][pathogen] works fine too (but I recommend
@@ -23,8 +21,7 @@ automatically turn itself on for HTML, XML and a few other HTML-like filetypes.
 You can also explicitly turn it on for other filetypes too (more details in the
 Options section).
 
-Options
--------
+## Options
 
 All options have reasonable defaults so if the plug-in works after installation
 you don't need to change any options. These options can be configured in your
@@ -88,8 +85,7 @@ Default: `1`
 
     let g:mta_use_matchparen_group = 1
 
-FAQ
----
+## FAQ
 
 ### I've noticed that sometimes no tags are highlighted. Why?
 
@@ -100,8 +96,7 @@ for performance reasons (ie. what happens if the user opens a 10k HTML file?).
 It's also possible that the plugin's parser is just out of ideas on how to
 extract the enclosing tags out of your text. This should be very rare though.
 
-Contact
--------
+## Contact
 
 If you have questions, bug reports, suggestions, etc. please use the [issue
 tracker][tracker]. The latest
@@ -109,8 +104,7 @@ version is available at <http://github.com/Valloric/MatchTagAlways>.
 
 The author's homepage is <http://val.markovic.io>.
 
-License
--------
+## License
 
 This software is licensed under the [GPL v3 license][gpl].
 © 2012 Strahinja Val Markovic &lt;<val@markovic.io>&gt;.
