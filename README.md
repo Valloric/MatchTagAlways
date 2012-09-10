@@ -16,6 +16,10 @@ Use [Vundle][vundle] to install the plugin. You _are_ using Vundle to manage
 your Vim plugins, right? [Pathogen][pathogen] works fine too (but I recommend
 Vundle).
 
+Note that the plugin requires that your copy of Vim is compiled with Python
+support. You can check for this with `:echo has('python')` in Vim. If the output
+is `1`, then you have Python support.
+
 After installation you should be done. The plugin should be plug & play. It will
 automatically turn itself on for HTML, XML and a few other HTML-like filetypes.
 You can also explicitly turn it on for other filetypes too (more details in the
