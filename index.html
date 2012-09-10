@@ -1,0 +1,166 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Matchtagalways by Valloric</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/Valloric/MatchTagAlways">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/Valloric/MatchTagAlways/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/Valloric/MatchTagAlways/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>Matchtagalways</h1>
+          <p>Vim plugin that always highlights the enclosing html/xml tags</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/Valloric">Valloric</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
+        </div>
+
+        <h1>Always highlight enclosing tags</h1>
+
+<p>The MatchTagAlways.vim (MTA) plug-in for the <a href="http://www.vim.org/">Vim text editor</a> always
+highlights the XML/HTML tags that enclose your cursor location. It's probably
+easiest to describe with a screenshot:</p>
+
+<p><img src="http://i.imgur.com/qAf0N.gif" alt="MatchTagAlways screen shot"></p>
+
+<p>It even works with HTML templating languages like Jinja or HTML5 use-cases
+like unclosed tags. It's pretty smart and should do the right thing in most
+cases. If it doesn't, report the problem on the <a href="https://github.com/Valloric/MatchTagAlways/issues">issue tracker</a>!</p>
+
+<h2>Installation</h2>
+
+<p>Use <a href="https://github.com/gmarik/vundle#about">Vundle</a> to install the plugin. You <em>are</em> using Vundle to manage
+your Vim plugins, right? <a href="https://github.com/tpope/vim-pathogen#pathogenvim">Pathogen</a> works fine too (but I recommend
+Vundle).</p>
+
+<p>Note that the plugin requires that your copy of Vim is compiled with Python
+support. You can check for this with <code>:echo has('python')</code> in Vim. If the output
+is <code>1</code>, then you have Python support.</p>
+
+<p>After installation you should be done. The plugin should be plug &amp; play. It will
+automatically turn itself on for HTML, XML and a few other HTML-like filetypes.
+You can also explicitly turn it on for other filetypes too (more details in the
+Options section).</p>
+
+<h2>Options</h2>
+
+<p>All options have reasonable defaults so if the plug-in works after installation
+you don't need to change any options. These options can be configured in your
+<a href="http://vimhelp.appspot.com/starting.txt.html#vimrc">vimrc script</a> by including a line like this:</p>
+
+<pre><code>let g:mta_use_matchparen_group = 1
+</code></pre>
+
+<p>Note that after changing an option in your <a href="http://vimhelp.appspot.com/starting.txt.html#vimrc">vimrc script</a> you have to
+restart Vim for the changes to take effect.</p>
+
+<h3>The <code>g:mta_filetypes</code> option</h3>
+
+<p>This option holds all the filetypes for which this plugin will try to find and
+highlight enclosing tags. It's a Vim dictionary with keys being Vim filetypes.
+The values set for those keys don't matter and are not checked, the only thing
+that matters is that a key is present in the dictionary (VimL has no sets).</p>
+
+<p>You can find out what the current file's filetype is in Vim with <code>:set ft?</code>.
+Don't forget that question mark at the end!</p>
+
+<p>Default: <code>{ 'html' : 1, 'xhtml' : 1, 'xml' : 1, 'jinja' : 1 }</code></p>
+
+<pre><code>let g:mta_filetypes = {
+    \ 'html' : 1,
+    \ 'xhtml' : 1,
+    \ 'xml' : 1,
+    \ 'jinja' : 1,
+    \}
+</code></pre>
+
+<h3>The <code>g:mta_use_matchparen_group</code> option</h3>
+
+<p>When set to 1, forces the use of the <a href="http://vimhelp.appspot.com/pi_paren.txt.html">MatchParen</a> syntax group. This
+is the same group that Vim uses to highlight parens, braces etc. This option is
+useful for people who want to use the same highlight color for both constructs.</p>
+
+<p>When set to 0, MTA will use a custom <code>MatchTag</code> syntax group with a default
+highlight color. See the <code>g:mta_set_default_matchtag_color</code> option for
+instructions on how to change that color.</p>
+
+<p>Default: <code>0</code></p>
+
+<pre><code>let g:mta_use_matchparen_group = 0
+</code></pre>
+
+<h3>The <code>g:mta_set_default_matchtag_color</code> option</h3>
+
+<p>This option only makes sense when <code>g:mta_use_matchparen_group</code> is set to 0. When
+it is, <code>g:mta_set_default_matchtag_color</code> option can be used to prevent MTA from
+overwriting any color you have set for the <code>MatchTag</code> group.</p>
+
+<p>So, if you want to use a custom color for tag highlighting, have both
+<code>g:mta_use_matchparen_group</code> and <code>g:mta_set_default_matchtag_color</code> set to 0 and
+then set a custom color for <code>MatchTag</code> in your <code>vimrc</code>. For example, the
+following command would set a light green text background and a black foreground
+color ('foreground' is the text color):</p>
+
+<pre><code>highlight MatchTag ctermfg=black ctermbg=lightgreen guifg=black guibg=lightgreen
+</code></pre>
+
+<p>See <code>:help highlight</code> for more details on text highlighting commands.</p>
+
+<p>Default: <code>1</code></p>
+
+<pre><code>let g:mta_use_matchparen_group = 1
+</code></pre>
+
+<h2>FAQ</h2>
+
+<h3>I've noticed that sometimes no tags are highlighted. Why?</h3>
+
+<p>The plugin only scans the lines that are visible in your window. If an opening
+tag is visible but the closing tag is not, no tag will be highlighted. This is
+for performance reasons (ie. what happens if the user opens a 10k HTML file?).</p>
+
+<p>It's also possible that the plugin's parser is just out of ideas on how to
+extract the enclosing tags out of your text. This should be very rare though.</p>
+
+<h2>Contact</h2>
+
+<p>If you have questions, bug reports, suggestions, etc. please use the <a href="https://github.com/Valloric/MatchTagAlways/issues">issue
+tracker</a>. The latest
+version is available at <a href="http://github.com/Valloric/MatchTagAlways">http://github.com/Valloric/MatchTagAlways</a>.</p>
+
+<p>The author's homepage is <a href="http://val.markovic.io">http://val.markovic.io</a>.</p>
+
+<h2>License</h2>
+
+<p>This software is licensed under the <a href="http://www.gnu.org/copyleft/gpl.html">GPL v3 license</a>.
+© 2012 Strahinja Val Markovic &lt;<a href="mailto:val@markovic.io">val@markovic.io</a>&gt;.</p>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
