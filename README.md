@@ -6,7 +6,7 @@ easiest to describe with a screenshot:
 
 ![MatchTagAlways screen shot](http://i.imgur.com/qAf0N.gif)
 
-It even doesn't bork on HTML templating languages like Jinja or HTML5 use-cases
+It even works with HTML templating languages like Jinja or HTML5 use-cases
 like unclosed tags. It's pretty smart and should do the right thing in most
 cases. If it doesn't, report the problem on the [issue tracker][tracker]!
 

@@ -25,9 +25,9 @@ describe with a screenshot:
 
     MatchTagAlways screen shot, see reference [1]
 
-It even doesn't bork on HTML templating languages like Jinja or HTML5
-use-cases like unclosed tags. It's pretty smart and should do the right thing
-in most cases. If it doesn't, report the problem on the issue tracker [2]!
+It even works with HTML templating languages like Jinja or HTML5 use-cases
+like unclosed tags. It's pretty smart and should do the right thing in most
+cases. If it doesn't, report the problem on the issue tracker [2]!
 
 ===============================================================================
                                                    *matchtagalways-installation*
