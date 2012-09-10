@@ -104,7 +104,7 @@ extract the enclosing tags out of your text. This should be very rare though.
 
 If you have questions, bug reports, suggestions, etc. please use the [issue
 tracker][tracker]. The latest
-version is available at <http://github.com/Valloric/MatchTagAlways>.
+version is available at <http://valloric.github.com/MatchTagAlways/>.
 
 The author's homepage is <http://val.markovic.io>.
 
