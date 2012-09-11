@@ -65,9 +65,14 @@ When set to 0, MTA will use a custom `MatchTag` syntax group with a default
 highlight color. See the `g:mta_set_default_matchtag_color` option for
 instructions on how to change that color.
 
-Default: `0`
+By default, this option is set to 1 because this makes it very unlikely that
+your colorscheme will conflict with default colors used for the `MatchTag`
+group. It's the safe choice. Feel free to toggle this option to 1 (the author
+uses it like this).
 
-    let g:mta_use_matchparen_group = 0
+Default: `1`
+
+    let g:mta_use_matchparen_group = 1
 
 ### The `g:mta_set_default_matchtag_color` option
 

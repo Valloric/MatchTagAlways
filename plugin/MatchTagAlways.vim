@@ -36,7 +36,7 @@ let g:mta_filetypes =
       \} )
 
 let g:mta_use_matchparen_group =
-      \ get( g:, 'mta_use_matchparen_group', 0 )
+      \ get( g:, 'mta_use_matchparen_group', 1 )
 let g:mta_set_default_matchtag_color =
       \ get( g:, 'mta_set_default_matchtag_color', 1 )
 
