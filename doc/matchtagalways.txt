@@ -91,8 +91,8 @@ highlight color. See the |g:mta_set_default_matchtag_color| option for
 instructions on how to change that color.
 
 By default, this option is set to 1 because this makes it very unlikely that
-your colorscheme will conflict with default colors used for the 'MatchTag'
-group. It's the safe choice. Feel free to toggle this option to 1 (the author
+your colorscheme will conflict with the default colors used for the 'MatchTag'
+group. It's the safe choice. Feel free to toggle this option to 0 (the author
 uses it like this).
 
 Default: '1'
