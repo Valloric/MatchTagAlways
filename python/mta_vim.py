@@ -27,6 +27,15 @@ def CurrentLineAndColumn():
   return line, column
 
 
+def CanAccessCursorColumn( cursor_column ):
+  try:
+    # The passed-in cursor_column is 1-based, vim.current.line is 0-based
+    vim.current.line[ cursor_column - 1 ]
+    return True
+  except IndexError:
+    return False
+
+
 def LocationOfEnclosingTagsInWindowView():
   # 1-based line numbers
   first_window_line = int( vim.eval( "line('w0')" ) )
@@ -38,6 +47,12 @@ def LocationOfEnclosingTagsInWindowView():
 
   cursor_line, cursor_column = CurrentLineAndColumn()
   adapted_cursor_line = cursor_line - first_window_line + 1
+
+  if not CanAccessCursorColumn( cursor_column ):
+    # We need to do this because when the cursor is on the last column in insert
+    # mode, that column *doesn't exist yet*. Not until the user actually types
+    # something in and moves the cursor forward.
+    cursor_column -= 1
 
   ( opening_tag_line,
     opening_tag_column,
