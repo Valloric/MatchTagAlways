@@ -17,6 +17,7 @@
 
 
 let s:script_folder_path = escape( expand( '<sfile>:p:h' ), '\' )
+py import sys
 py import vim
 exe 'python sys.path = sys.path + ["' . s:script_folder_path . '/../python"]'
 py import mta_vim
