@@ -92,7 +92,7 @@ See `:help highlight` for more details on text highlighting commands.
 
 Default: `1`
 
-    let g:mta_use_matchparen_group = 1
+    let g:mta_set_default_matchtag_color = 1
 
 ## FAQ
 
