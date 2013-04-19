@@ -1,5 +1,7 @@
 # Always highlight enclosing tags
 
+[![Build Status](https://travis-ci.org/Valloric/MatchTagAlways.png?branch=master)](https://travis-ci.org/Valloric/MatchTagAlways)
+
 The MatchTagAlways.vim (MTA) plug-in for the [Vim text editor][vim] always
 highlights the XML/HTML tags that enclose your cursor location. It's probably
 easiest to describe with a screenshot:
