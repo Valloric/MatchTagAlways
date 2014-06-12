@@ -33,6 +33,7 @@ let g:mta_filetypes =
       \ 'xhtml' : 1,
       \ 'xml' : 1,
       \ 'jinja' : 1,
+      \ 'eruby' : 1,
       \} )
 
 let g:mta_use_matchparen_group =
