@@ -17,10 +17,19 @@
 
 
 let s:script_folder_path = escape( expand( '<sfile>:p:h' ), '\' )
-py import sys
-py import vim
-exe 'python sys.path = sys.path + ["' . s:script_folder_path . '/../python"]'
-py import mta_vim
+if has('python')
+    " Python 2
+    py import sys
+    py import vim
+    exe 'python sys.path = sys.path + ["' . s:script_folder_path . '/../python"]'
+    py import mta_vim
+else
+    " Python 3
+    py3 import sys
+    py3 import vim
+    exe 'python3 sys.path = sys.path + ["' . s:script_folder_path . '/../python"]'
+    py3 import mta_vim
+endif
 
 
 if g:mta_use_matchparen_group
@@ -70,10 +79,18 @@ endfunction
 
 function! s:GetEnclosingTagLocations()
   " Sadly, pyeval does not exist before Vim 7.3.584
-  if v:version >= 703 && has( 'patch584' )
-    return pyeval( 'mta_vim.LocationOfEnclosingTagsInWindowView()' )
+  if has('python')
+    if v:version >= 703 && has( 'patch584' )
+      return pyeval( 'mta_vim.LocationOfEnclosingTagsInWindowView()' )
+    else
+      py vim.command( 'return ' + str( mta_vim.LocationOfEnclosingTagsInWindowView() ) )
+    endif
   else
-    py vim.command( 'return ' + str( mta_vim.LocationOfEnclosingTagsInWindowView() ) )
+    if v:version >= 703 && has( 'patch584' )
+      return py3eval( 'mta_vim.LocationOfEnclosingTagsInWindowView()' )
+    else
+      py3 vim.command( 'return ' + str( mta_vim.LocationOfEnclosingTagsInWindowView() ) )
+    endif
   endif
 endfunction
 

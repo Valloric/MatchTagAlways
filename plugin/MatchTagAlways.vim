@@ -20,9 +20,9 @@ if exists( "g:loaded_matchtagalways" )
 endif
 let g:loaded_matchtagalways = 1
 
-if !has( 'python' )
+if !( has( 'python' ) || has( 'python3' ) )
   echohl WarningMsg |
-        \ echomsg "MatchTagAlways unavailable: requires python 2.x" |
+        \ echomsg "MatchTagAlways unavailable: requires python." |
         \ echohl None
   finish
 endif

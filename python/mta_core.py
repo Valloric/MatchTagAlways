@@ -17,8 +17,10 @@
 # You should have received a copy of the GNU General Public License
 # along with MatchTagAlways.  If not, see <http://www.gnu.org/licenses/>.
 
+import sys
 import re
 
+PY2 = (sys.version_info[0] == 2)
 
 TAG_REGEX = re.compile(
   r"""<\s*                    # the opening bracket + whitespace
@@ -58,8 +60,12 @@ class Tag( object ):
     self.end_offset = match_object.end()
 
 
-  def __nonzero__( self ):
-    return self.valid
+  if PY2:
+    def __nonzero__( self ):
+      return self.valid
+  else:
+    def __bool__( self ):
+      return self.valid
 
 
   def __eq__( self, other ):
