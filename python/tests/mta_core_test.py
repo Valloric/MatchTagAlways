@@ -17,9 +17,16 @@
 # You should have received a copy of the GNU General Public License
 # along with MatchTagAlways.  If not, see <http://www.gnu.org/licenses/>.
 
+# Python 3 compatibility
+import sys
+PY2 = (sys.version_info[0] == 2)
+if PY2:
+  range = xrange
+
+
+# imports
 from nose.tools import eq_
 from .. import mta_core
-
 
 def LineColumnOffsetConversions_Basic_test():
   text = "foo"
@@ -266,7 +273,7 @@ def LocationsOfEnclosingTags_CursorInTagFull_test():
   def gen( column ):
     eq_( ( 1, 1, 1, 6 ), mta_core.LocationsOfEnclosingTags( html, 1, column ) )
 
-  for i in xrange( 1, len( html ) + 1 ):
+  for i in range( 1, len( html ) + 1 ):
     yield gen, i
 
 
@@ -290,7 +297,7 @@ def LocationsOfEnclosingTags_UnbalancedOpeningTagFull_test():
   def gen( column ):
     eq_( ( 1, 1, 1, 12 ), mta_core.LocationsOfEnclosingTags( html, 1, column ) )
 
-  for i in xrange( 1, len( html ) + 1 ):
+  for i in range( 1, len( html ) + 1 ):
     yield gen, i
 
 
