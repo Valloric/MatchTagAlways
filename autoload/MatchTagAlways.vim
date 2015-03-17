@@ -58,7 +58,6 @@ function! MatchTagAlways#Setup()
   if !g:mta_use_matchparen_group && g:mta_set_default_matchtag_color
     hi MatchTag ctermfg=black ctermbg=lightblue guifg=black guibg=lightblue
   endif
-  execute "nmap " . g:Mta_goto_enclosing_tag_map . " :call MatchTagAlways#GoToEnclosingTag()<cr>"
 endfunction
 
 

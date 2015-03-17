@@ -42,9 +42,8 @@ let g:mta_use_matchparen_group =
       \ get( g:, 'mta_use_matchparen_group', 1 )
 let g:mta_set_default_matchtag_color =
       \ get( g:, 'mta_set_default_matchtag_color', 1 )
-if !exists('g:Mta_goto_enclosing_tag_map')
-	let g:Mta_goto_enclosing_tag_map = '<leader>%'
-endif
+
+command -nargs=0 MtaJumpToOtherTag call MatchTagAlways#GoToEnclosingTag()
 
 augroup matchtagalways
   autocmd! FileType * call MatchTagAlways#Setup()
