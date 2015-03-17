@@ -15,7 +15,7 @@
 " You should have received a copy of the GNU General Public License
 " along with MatchTagAlways.  If not, see <http://www.gnu.org/licenses/>.
 
-if exists( "g:loaded_matchtagalways" ) || !has('python')
+if exists( "g:loaded_matchtagalways" )
   finish
 endif
 let g:loaded_matchtagalways = 1
