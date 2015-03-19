@@ -110,7 +110,7 @@ the closing tag.
 
 Setting a mapping for this command: 
 
-    `nmap <leader>% :MtaJumpToOtherTag<cr>`
+    nnoremap <leader>% :MtaJumpToOtherTag<cr>
 
 ## FAQ
 
