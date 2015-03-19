@@ -43,6 +43,8 @@ let g:mta_use_matchparen_group =
 let g:mta_set_default_matchtag_color =
       \ get( g:, 'mta_set_default_matchtag_color', 1 )
 
+command -nargs=0 MtaJumpToOtherTag call MatchTagAlways#GoToEnclosingTag()
+
 augroup matchtagalways
   autocmd! FileType * call MatchTagAlways#Setup()
 augroup END

@@ -94,6 +94,38 @@ function! s:GetEnclosingTagLocations()
   endif
 endfunction
 
+function! MatchTagAlways#GoToEnclosingTag()
+  let [ opening_tag_line, opening_tag_column, closing_tag_line, closing_tag_column ] =
+        \ s:GetEnclosingTagLocations()
+  let first_window_line = line( 'w0' )
+
+  if opening_tag_line < first_window_line
+    return
+  endif
+
+  let pos = getpos('.')
+  let current_line = pos[1]
+  let current_column = pos[2]
+
+  if (closing_tag_line == opening_tag_line)
+    if current_column >= closing_tag_column
+      let line = opening_tag_line
+      let column = opening_tag_column
+    else
+      let line = closing_tag_line
+      let column = closing_tag_column
+    endif
+  elseif current_line == closing_tag_line
+    let line = opening_tag_line
+    let column = opening_tag_column
+  else
+    let line = closing_tag_line
+    let column = closing_tag_column
+  endif
+
+  call cursor(line, column)
+endfunction
+
 
 function! s:HighlightEnclosingTags()
   let [ opening_tag_line, opening_tag_column, closing_tag_line, closing_tag_column ] =
