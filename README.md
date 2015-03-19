@@ -96,6 +96,22 @@ Default: `1`
 
     let g:mta_set_default_matchtag_color = 1
 
+## Comands
+
+You can use the plugin to also go to the closing tag if this tag is in the
+visible screen. 
+
+### `MtaJumpToOtherTag`
+
+Jumps to the enclosing tag if the tag is visible. If you are on top of an
+opening tag, it will jump to the closing tag. If you are on the closing tag,
+it will jump to the opening tag. If you are inside a tag, then it will jump to
+the closing tag. 
+
+Setting a mapping for this command: 
+
+    `nmap <leader>% :MtaJumpToOtherTag<cr>`
+
 ## FAQ
 
 ### I've noticed that sometimes no tags are highlighted. Why?
