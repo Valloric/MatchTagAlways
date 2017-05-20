@@ -137,7 +137,7 @@ function! s:HighlightEnclosingTags()
   endif
 
   exe '2match ' . s:match_group . ' /' .
-        \ '\(\%' . opening_tag_line . 'l\%' . opening_tag_column . 'c<\/\?\_s*\zs.\{-}\ze[ >\/]\)\|' .
+        \ '\(\%' . opening_tag_line . 'l\%' . opening_tag_column . 'c<\/\?\_s*\zs.\{-}\ze[ >\/\n]\)\|' .
         \ '\(\%' . closing_tag_line . 'l\%' . closing_tag_column . 'c<\/\?\_s*\zs.\{-}\ze[ >\/]\)' .
         \ '/'
   let w:tags_highlighted = 1
